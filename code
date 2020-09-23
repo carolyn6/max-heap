@@ -1,0 +1,79 @@
+
+class MaxHeap: 
+  
+    def __init__(self): #initalize class
+        self.Heap = []#heap is empty for now
+        self.Heapsize= 0 #heapsize is low for now
+                
+        
+    
+  
+    ##half given index of node
+    def parent(self, i): 
+          
+        return i // 2
+  
+    # left child is 2* given index
+    def leftChild(self, i): 
+          
+        return 2 * i
+  
+    #Right child is indexed at 2*i plus 1
+    def rightChild(self, i): 
+          
+        return (2 * i) + 1
+
+    # Function to heapify the node at position i 
+    def maxHeapify(self, A, i): 
+            largest = i #intialize largest as i 
+            l=2 * i #left child #bindary subtree rooted at left
+            r= (2 * i) + 1 #right child #binary subtree rooted at right
+        # If i position  is smaller than position of l
+            if l < self.Heapsize and (A[i] < A[l]):
+                largest = l #largest is left child
+            else:
+                largest = i # or else largest is i
+            if r< self.Heapsize and (A[r] > A[largest]): #tests if r position in array bigger than largest index
+                largest = r#largest becomes 
+            if largest != i:#if A[i] is smaller than children than it violates max heap property
+                A[i], A[largest] = A[largest], A[i]#we swap the beginning node with new largest node, i floats down heap
+                self.maxHeapify(A, largest)#we recursively heapidy new subtree created by largest which is now new i node
+                #max heapfiy run time is O(h)
+ 
+  
+#this is function to build max heap from an array
+    def buildmaxHeap(self, A):
+        self.Heapsize = len(A)#heapsize is now len of array
+        n = len(A) #n is leaf from subarray
+        self.Heap = [0] + A[:]# heap is now all elements of array
+        for i in range (n//2 -1, -1, -1): # for i from last internal node(, go backwards to the 0 index(the trivial root)
+            #starts at half node then loops to next node all the way to first node
+            self.maxHeapify(A,i) #maxify the index given from for loop # the new root node for subtree
+#build max heap is runtime O(n)
+    def heapsort(self, A): 
+        self.buildmaxHeap(A)#build a max heap
+        for i in range(len(A)-1,0,-1):# for index last node to first node
+            A[0], A[i] = A[i] , A[0] #swap first element of heap with element of i
+            self.Heapsize= self.Heapsize -1 # heap decreases in size by 1
+            self.maxHeapify(A,0) #heapify the new subtree
+        return A
+            
+    def Heapmax(self,A):
+        return A[len(A)-1]
+    def Pop_heap(self, A):
+        maxx= A[len(A)-1]
+        for i in range(0,len(A)-1,-1):
+            A[len(A)-1], A[i] = A[i] , A[len(A)-1]
+            self.Heapsize= self.Heapsize -1
+            self.maxHeapify(A,len(A)-1)
+          
+        return maxx
+    
+def main():
+    arr =[randrange(100) for x in range(25)]
+    p=arr
+    bh = MaxHeap()
+    bh.buildmaxHeap(p)
+    print(bh.heapsort(p))  
+    print(bh.Pop_heap(p))
+main()
